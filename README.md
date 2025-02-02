@@ -15,7 +15,7 @@ For the longest time I've been manually keyword filtering posts in the trending 
 | Env var                          | Description                                                                           |
 | -------------------------------- | ------------------------------------------------------------------------------------- |
 | MASTODON_SERVER                  | server to connect to (e.g. "bne.social")                                              |
-| MASTODON_USER                    | user to log in as (e.g. "me@example.org")                                             |
+| MASTODON_EMAIL                   | user to log in as (e.g. "me@example.org")                                             |
 | MASTODON_PASS                    | password to the user account                                                          |
 | ALLOWLISTED_SERVERS              | servers that get automatically approved                                               |
 | REJECTED_KEYWORDS                | comma separated keywords to reject. case insensitive. (e.g. "trump,musk,uspol")       |
