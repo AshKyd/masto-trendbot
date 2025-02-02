@@ -4,6 +4,13 @@ Automatic keyword filtering for Mastodon trending topics.
 
 For the longest time I've been manually keyword filtering posts in the trending topics section to remove inflammatory trending topics that aren't topical to our server. There currently isn't an API endpoint to manage this, so this script uses Puppeteer to log in using a moderator account and navigate the admin section manually.
 
+# Prerequisites
+
+This script needs:
+
+1. a username & password for an account with moderator access. This is not amazingly secure, so probably make a new one rather than using your admin account.
+2. public API access to retrieve posts as json
+
 ## Usage
 
 1. install dependencies with `npm ci`
@@ -21,4 +28,4 @@ For the longest time I've been manually keyword filtering posts in the trending 
 | REJECTED_KEYWORDS                | comma separated keywords to reject. case insensitive. (e.g. "trump,musk,uspol")       |
 | REJECTED_KEYWORDS_CASE_SENSITIVE | comma separated keywords to reject. case sensitive. (e.g. "USA")                      |
 | OVERRIDE_KEYWORDS                | comma separated keywords that override a rejection. case insensitive. (e.g. "auspol") |
-| CRON                             | optional crontab syntax to rerun this script (e.g. "_/15 _ \* \* \*")                 |
+| CRON                             | optional crontab syntax to rerun this script                                          |
