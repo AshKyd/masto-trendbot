@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install gnupg wget -y && \
   rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
+RUN chown node:node /usr/src/app
 USER node
 COPY package*.json ./
 RUN --mount=type=bind,source=package.json,target=package.json \
