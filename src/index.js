@@ -4,7 +4,11 @@ import puppeteer from "puppeteer";
 
 export default async function go() {
   // Launch the browser, restore state
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch(
+    process.env.CHROMIUM_PATH
+      ? { executablePath: process.env.CHROMIUM_PATH }
+      : {}
+  );
   console.log("restoring cookies");
   loadCookies(browser);
   const page = await browser.newPage();
