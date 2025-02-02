@@ -62,7 +62,9 @@ export default async function go() {
     );
 
     if (!trends.length) {
-      console.error("Trends missing. HTML debug follows:");
+      console.error(
+        "Trends missing. Maybe our account details are wrong. HTML debug follows:"
+      );
       const data = await page.evaluate(() => document.body.outerHTML);
       console.log(data);
       setTimeout(() => {
