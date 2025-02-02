@@ -49,7 +49,7 @@ export function isUspol(data) {
   const rejectedKeywordSensitive = doesKeywordMatch(
     process.env.REJECTED_KEYWORDS_CASE_SENSITIVE.split(","),
     data,
-    true
+    false
   );
   if (rejectedKeywordSensitive) {
     console.log(
