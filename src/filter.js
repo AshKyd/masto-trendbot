@@ -2,19 +2,22 @@ import striptags from "striptags";
 
 function doesKeywordMatch(
   keywords,
-  { content, media_attachments },
+  { content, media_attachments, card },
   isLowercase
 ) {
-  const lcContent = isLowercase ? content.toLowerCase() : content;
+  const sanitised = (string) =>
+    isLowercase ? String(string).toLowerCase() : String(string);
+
   return keywords.find((keyword) => {
-    const isMatched =
-      lcContent.includes(keyword) ||
-      media_attachments.some((attachment) =>
-        attachment.description?.[
-          isLowercase ? "toLowerCase" : "trim"
-        ]()?.includes(keyword)
-      );
-    return isMatched;
+    const isMatchedContent = sanitised(content).includes(keyword);
+    const isMatchedMedia = media_attachments.some((attachment) =>
+      sanitised(attachment.description).includes(keyword)
+    );
+    const isMatchedCard = sanitised(
+      [card?.title, card?.description].join(" ")
+    ).includes(keyword);
+
+    return isMatchedContent || isMatchedMedia || isMatchedCard;
   });
 }
 
