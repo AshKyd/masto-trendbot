@@ -30,7 +30,11 @@ export async function saveCookies(browser) {
 
 export async function loadCookies(browser) {
   // ... puppeteer code
-  const cookiesString = fs.readFileSync(getFilename("cookies.json"), "utf8");
-  const cookies = JSON.parse(cookiesString);
-  await browser.setCookie(...cookies);
+  try {
+    const cookiesString = fs.readFileSync(getFilename("cookies.json"), "utf8");
+    const cookies = JSON.parse(cookiesString);
+    await browser.setCookie(...cookies);
+  } catch (e) {
+    console.log(e.message);
+  }
 }

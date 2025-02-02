@@ -4,7 +4,11 @@ import puppeteer from "puppeteer";
 
 export default async function go() {
   // Launch the browser, restore state
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch(
+    process.env.CHROMIUM_PATH
+      ? { executablePath: process.env.CHROMIUM_PATH }
+      : {}
+  );
   console.log("restoring cookies");
   loadCookies(browser);
   const page = await browser.newPage();
@@ -56,6 +60,18 @@ export default async function go() {
         return inputs.map((input) => input.value);
       }
     );
+
+    if (!trends.length) {
+      console.error(
+        "Trends missing. Maybe our account details are wrong. HTML debug follows:"
+      );
+      const data = await page.evaluate(() => document.body.outerHTML);
+      console.log(data);
+      setTimeout(() => {
+        process.exit();
+      }, 30000);
+      return;
+    }
 
     // Pull down the trend from the API and check if it needs to be filtered
     // Note: only works when the public API is available
