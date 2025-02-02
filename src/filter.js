@@ -29,7 +29,7 @@ export function isUspol(data) {
   );
   if (overriddenKeyword) {
     console.log(`Allowed post with ‘${overriddenKeyword}’ - ${logLine}`);
-    return false;
+    return true;
   }
 
   // Rejected keywords are matched case insensitive
