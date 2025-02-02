@@ -53,6 +53,8 @@ export default async function go() {
     pageNumber++;
     console.log(`Inspecting page ${pageNumber}`);
 
+    const totalTrends = await page.$$(".batch-table__row");
+
     // fetch trend IDs
     const trends = await page.$$eval(
       ".batch-table__row--attention input",
@@ -61,7 +63,7 @@ export default async function go() {
       }
     );
 
-    if (!trends.length) {
+    if (!totalTrends.length) {
       console.error(
         "Trends missing. Maybe our account details are wrong. HTML debug follows:"
       );
