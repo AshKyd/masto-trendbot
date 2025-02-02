@@ -53,7 +53,7 @@ export function isUspol(data) {
   );
   if (rejectedKeywordSensitive) {
     console.log(
-      `Filtered post with ‘${rejectedKeyword}’ case-sensitive - ${logLine}`
+      `Filtered post with ‘${rejectedKeywordSensitive}’ case-sensitive - ${logLine}`
     );
     return true;
   }
