@@ -1,4 +1,4 @@
-FROM node:24-alpine
+FROM node:22-alpine
 ENV NODE_ENV production
 ARG MASTODON_SERVER
 ARG MASTODON_USER
