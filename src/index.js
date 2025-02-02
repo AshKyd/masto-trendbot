@@ -61,6 +61,16 @@ export default async function go() {
       }
     );
 
+    if (!trends.length) {
+      console.error("Trends missing. HTML debug follows:");
+      const data = await page.evaluate(() => document.body.outerHTML);
+      console.log(data);
+      setTimeout(() => {
+        process.exit();
+      }, 30000);
+      return;
+    }
+
     // Pull down the trend from the API and check if it needs to be filtered
     // Note: only works when the public API is available
     const toFilter = (
