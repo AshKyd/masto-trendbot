@@ -1,4 +1,4 @@
-import { isUspol } from "./filter.js";
+import { isDisallowed } from "./filter.js";
 import { loadCookies, saveCookies } from "./helpers.js";
 import puppeteer from "puppeteer";
 
@@ -87,13 +87,13 @@ export default async function go() {
             return false;
           }
           const json = await res.json();
-          const isDisallowed = isUspol(json);
+          const isFiltered = isDisallowed(json);
           const allowedServers = process.env.ALLOWLISTED_SERVERS.split(",");
           const isAllowListed = allowedServers.some((server) =>
             json.account.acct.includes(server)
           );
 
-          if (isDisallowed) {
+          if (isFiltered) {
             if (isAllowListed) {
               console.log(json.account.acct, "is allowed");
               return false;

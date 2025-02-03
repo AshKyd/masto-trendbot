@@ -21,8 +21,17 @@ function doesKeywordMatch(
   });
 }
 
-export function isUspol(data) {
+export function isDisallowed(data) {
   const logLine = `“${striptags(data.content).slice(0, 50)}…” - ${data.url}`;
+
+  const isAllowedLanguage =
+    !process.env.LANGUAGES ||
+    data.language === null ||
+    process.env.LANGUAGES.split(",").includes(data.language);
+  if (!isAllowedLanguage) {
+    console.log(`Filtered post with lang ${data.language} - ${logLine}`);
+    return true;
+  }
 
   // Override keywords allow posts that otherwise might have been disallowed
   const overriddenKeyword = doesKeywordMatch(
@@ -32,7 +41,7 @@ export function isUspol(data) {
   );
   if (overriddenKeyword) {
     console.log(`Allowed post with ‘${overriddenKeyword}’ - ${logLine}`);
-    return true;
+    return false;
   }
 
   // Rejected keywords are matched case insensitive

@@ -29,3 +29,4 @@ This script needs:
 | REJECTED_KEYWORDS_CASE_SENSITIVE | comma separated keywords to reject. case sensitive. (e.g. "USA")                      |
 | OVERRIDE_KEYWORDS                | comma separated keywords that override a rejection. case insensitive. (e.g. "auspol") |
 | CRON                             | optional crontab syntax to rerun this script                                          |
+| LANGUAGES                        | optional languages to allow, others will be filtered out                              |
