@@ -57,7 +57,7 @@ export default async function go() {
 
     // fetch trend IDs
     const trends = await page.$$eval(
-      ".batch-table__row--attention input",
+      ".batch-table__row:not(.batch-table__row--muted) input",
       (inputs) => {
         return inputs.map((input) => input.value);
       }
@@ -109,7 +109,7 @@ export default async function go() {
       // Check each of the checkboxes next to the posts we want to filter
       await Promise.all(
         toFilter.map((trendId) => {
-          const selector = `.batch-table__row--attention input[value="${trendId}"]`;
+          const selector = `.batch-table__row input[value="${trendId}"]`;
           return page.$eval(selector, (input) => {
             console.log(input);
             input.checked = true;
