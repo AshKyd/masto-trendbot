@@ -12,6 +12,11 @@ export default async function go() {
   console.log("restoring cookies");
   loadCookies(browser);
   const page = await browser.newPage();
+
+  // Set a custom user agent
+  const userAgent = await browser.userAgent();
+  await page.setUserAgent(userAgent.replace("HeadlessChrome", "MastoTrendBotAdminChrome"));
+
   await page.setViewport({ width: 1080, height: 1024 });
 
   // Load the login page first. This way we can tell if we need to authenticate
@@ -81,7 +86,9 @@ export default async function go() {
       await Promise.all(
         trends.map(async (trendId) => {
           const url = `https://${process.env.MASTODON_SERVER}/api/v1/statuses/${trendId}`;
-          const res = await fetch(url);
+          const res = await fetch(url, {
+            headers: { "User-Agent": "MastoTrendBotAdminNode" },
+          });
           if (res.status !== 200) {
             console.log("error fetching", url);
             return false;
