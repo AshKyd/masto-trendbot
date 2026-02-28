@@ -7,15 +7,27 @@ export default async function go() {
   const browser = await puppeteer.launch(
     process.env.CHROMIUM_PATH
       ? { executablePath: process.env.CHROMIUM_PATH }
-      : {}
+      : {},
   );
   console.log("restoring cookies");
   loadCookies(browser);
   const page = await browser.newPage();
 
+  // Disable image loading to save bandwidth and speed up the bot
+  await page.setRequestInterception(true);
+  page.on("request", (request) => {
+    if (request.resourceType() === "image") {
+      request.abort();
+    } else {
+      request.continue();
+    }
+  });
+
   // Set a custom user agent
   const userAgent = await browser.userAgent();
-  await page.setUserAgent(userAgent.replace("HeadlessChrome", "MastoTrendBotAdminChrome"));
+  await page.setUserAgent(
+    userAgent.replace("HeadlessChrome", "MastoTrendBotAdminChrome"),
+  );
 
   await page.setViewport({ width: 1080, height: 1024 });
 
@@ -47,7 +59,7 @@ export default async function go() {
     `https://${process.env.MASTODON_SERVER}/admin/trends/statuses`,
     {
       waitUntil: "load",
-    }
+    },
   );
 
   let pageNumber = 0;
@@ -65,12 +77,12 @@ export default async function go() {
       ".batch-table__row:not(.batch-table__row--muted) input",
       (inputs) => {
         return inputs.map((input) => input.value);
-      }
+      },
     );
 
     if (!totalTrends.length) {
       console.error(
-        "Trends missing. Maybe our account details are wrong. HTML debug follows:"
+        "Trends missing. Maybe our account details are wrong. HTML debug follows:",
       );
       const data = await page.evaluate(() => document.body.outerHTML);
       console.log(data);
@@ -97,7 +109,7 @@ export default async function go() {
           const isFiltered = isDisallowed(json);
           const allowedServers = process.env.ALLOWLISTED_SERVERS.split(",");
           const isAllowListed = allowedServers.some((server) =>
-            json.account.acct.includes(server)
+            json.account.acct.includes(server),
           );
 
           if (isFiltered) {
@@ -107,7 +119,7 @@ export default async function go() {
             }
             return trendId;
           }
-        })
+        }),
       )
     ).filter(Boolean);
 
@@ -121,7 +133,7 @@ export default async function go() {
             console.log(input);
             input.checked = true;
           });
-        })
+        }),
       );
 
       // Prepare to accept the dialog that's about to pop up
